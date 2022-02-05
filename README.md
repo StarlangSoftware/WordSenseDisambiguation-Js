@@ -46,7 +46,7 @@ After generating the classification dataset as above, one can use the [Classific
 For Developers
 ============
 
-You can also see [Java](https://github.com/starlangsoftware/WordSenseDisambiguation), [Python](https://github.com/starlangsoftware/WordSenseDisambiguation-Py), [Cython](https://github.com/starlangsoftware/WordSenseDisambiguation-Cy), [C++](https://github.com/starlangsoftware/WordSenseDisambiguation-CPP), or [C#](https://github.com/starlangsoftware/WordSenseDisambiguation-CS) repository.
+You can also see [Java](https://github.com/starlangsoftware/WordSenseDisambiguation), [Python](https://github.com/starlangsoftware/WordSenseDisambiguation-Py), [Cython](https://github.com/starlangsoftware/WordSenseDisambiguation-Cy), [C++](https://github.com/starlangsoftware/WordSenseDisambiguation-CPP), [Swift](https://github.com/starlangsoftware/WordSenseDisambiguation-Swift), or [C#](https://github.com/starlangsoftware/WordSenseDisambiguation-CS) repository.
 
 Detailed Description
 ============
@@ -56,9 +56,9 @@ Detailed Description
 In order to sense annotate a parse tree, one can use autoSemantic method of the TurkishSentenceAutoSemantic class.
 
 	let sentence = ...
-	let wordNet = WordNet();
-	let fsm = FsmMorphologicalAnalyzer();
-	let turkishAutoSemantic = TurkishSentenceAutoSemantic(wordnet, fsm)
+	let wordNet = new WordNet();
+	let fsm = new FsmMorphologicalAnalyzer();
+	let turkishAutoSemantic = new TurkishSentenceAutoSemantic(wordnet, fsm)
 	turkishAutoSemantic.autoSemantic()
 
 # Cite
