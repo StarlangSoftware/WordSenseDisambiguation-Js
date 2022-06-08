@@ -29,7 +29,7 @@
     "nlptoolkit-morphologicalanalysis": "^1.0.2",
     "nlptoolkit-namedentityrecognition": "^1.0.0",
     "nlptoolkit-parsetree": "^1.0.0",
-    "nlptoolkit-propbank": "^1.0.1",
+    "nlptoolkit-propbank": "^1.0.2",
     "nlptoolkit-sentinet": "^1.0.0",
     "nlptoolkit-util": "^1.0.4",
     "nlptoolkit-wordnet": "^1.0.2",
