@@ -1,6 +1,6 @@
 {
   "name": "nlptoolkit-wordsensedisambiguation",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "types": "index.js",
@@ -20,20 +20,22 @@
   "devDependencies": {
     "@types/mocha": "^9.1.0",
     "mocha": "^9.2.0",
-    "nlptoolkit-annotatedsentence": "^1.0.3",
-    "nlptoolkit-annotatedtree": "^1.0.0",
-    "nlptoolkit-corpus": "^1.0.4",
-    "nlptoolkit-dependencyparser": "^1.0.0",
-    "nlptoolkit-dictionary": "^1.0.2",
-    "nlptoolkit-framenet": "^1.0.0",
-    "nlptoolkit-morphologicalanalysis": "^1.0.2",
-    "nlptoolkit-namedentityrecognition": "^1.0.0",
-    "nlptoolkit-parsetree": "^1.0.0",
-    "nlptoolkit-propbank": "^1.0.2",
-    "nlptoolkit-sentinet": "^1.0.0",
-    "nlptoolkit-util": "^1.0.4",
-    "nlptoolkit-wordnet": "^1.0.2",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "nlptoolkit-annotatedsentence": "^1.0.4",
+    "nlptoolkit-annotatedtree": "^1.0.3",
+    "nlptoolkit-corpus": "^1.0.9",
+    "nlptoolkit-dependencyparser": "^1.0.3",
+    "nlptoolkit-dictionary": "^1.0.9",
+    "nlptoolkit-framenet": "^1.0.1",
+    "nlptoolkit-morphologicalanalysis": "^1.0.9",
+    "nlptoolkit-namedentityrecognition": "^1.0.1",
+    "nlptoolkit-parsetree": "^1.0.2",
+    "nlptoolkit-propbank": "^1.0.3",
+    "nlptoolkit-sentinet": "^1.0.1",
+    "nlptoolkit-util": "^1.0.5",
+    "nlptoolkit-wordnet": "^1.0.5"
   }
 }
