@@ -12,6 +12,12 @@
     exports.MostFrequentSentenceAutoSemantic = void 0;
     const SentenceAutoSemantic_1 = require("./SentenceAutoSemantic");
     class MostFrequentSentenceAutoSemantic extends SentenceAutoSemantic_1.SentenceAutoSemantic {
+        /**
+         * Constructor for the {@link MostFrequentSentenceAutoSemantic} class. Gets the Turkish wordnet and Turkish fst based
+         * morphological analyzer from the user and sets the corresponding attributes.
+         * @param turkishWordNet Turkish wordnet
+         * @param fsm Turkish morphological analyzer
+         */
         constructor(turkishWordNet, fsm) {
             super();
             this.turkishWordNet = turkishWordNet;

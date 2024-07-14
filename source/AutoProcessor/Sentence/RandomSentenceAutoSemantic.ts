@@ -12,12 +12,25 @@ export class RandomSentenceAutoSemantic extends SentenceAutoSemantic{
     private turkishWordNet: WordNet;
     private fsm: FsmMorphologicalAnalyzer;
 
+    /**
+     * Constructor for the {@link RandomSentenceAutoSemantic} class. Gets the Turkish wordnet and Turkish fst based
+     * morphological analyzer from the user and sets the corresponding attributes.
+     * @param turkishWordNet Turkish wordnet
+     * @param fsm Turkish morphological analyzer
+     */
     constructor(turkishWordNet: WordNet, fsm: FsmMorphologicalAnalyzer) {
         super();
         this.turkishWordNet = turkishWordNet
         this.fsm = fsm
     }
 
+    /**
+     * The method annotates the word senses of the words in the sentence randomly. The algorithm processes target
+     * words one by one. First, the algorithm constructs an array of all possible senses for the target word to
+     * annotate. Then it chooses a sense randomly.
+     * @param sentence Sentence to be annotated.
+     * @return True.
+     */
     protected autoLabelSingleSemantics(sentence: AnnotatedSentence): boolean {
         let random = new Random(1);
         for (let i = 0; i < sentence.wordCount(); i++) {

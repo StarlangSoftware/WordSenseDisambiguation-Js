@@ -5,8 +5,6 @@ import {
     FsmMorphologicalAnalyzer
 } from "nlptoolkit-morphologicalanalysis/dist/MorphologicalAnalysis/FsmMorphologicalAnalyzer";
 import {SynSet} from "nlptoolkit-wordnet/dist/SynSet";
-import {ParseNodeDrawable} from "nlptoolkit-annotatedtree/dist/ParseNodeDrawable";
-import {ViewLayerType} from "nlptoolkit-annotatedsentence/dist/ViewLayerType";
 import {Random} from "nlptoolkit-util/dist/Random";
 import {AnnotatedWord} from "nlptoolkit-annotatedsentence/dist/AnnotatedWord";
 
@@ -27,6 +25,14 @@ export class Lesk extends SentenceAutoSemantic{
         this.fsm = fsm
     }
 
+    /**
+     * Calculates the number of words that occur (i) in the definition or example of the given synset and (ii) in the
+     * given sentence.
+     * @param synSet Synset of which the definition or example will be checked
+     * @param sentence Sentence to be annotated.
+     * @return The number of words that occur (i) in the definition or example of the given synset and (ii) in the given
+     * sentence.
+     */
     private intersection(synSet: SynSet, sentence: AnnotatedSentence): number{
         let words1
         if (synSet.getExample() != null){
@@ -46,6 +52,16 @@ export class Lesk extends SentenceAutoSemantic{
         return count;
     }
 
+    /**
+     * The method annotates the word senses of the words in the sentence according to the simplified Lesk algorithm.
+     * Lesk is an algorithm that chooses the sense whose definition or example shares the most words with the target
+     * word’s neighborhood. The algorithm processes target words one by one. First, the algorithm constructs an array of
+     * all possible senses for the target word to annotate. Then for each possible sense, the number of words shared
+     * between the definition of sense synset and target sentence is calculated. Then the sense with the maximum
+     * intersection count is selected.
+     * @param sentence Sentence to be annotated.
+     * @return True, if at least one word is semantically annotated, false otherwise.
+     */
     protected autoLabelSingleSemantics(sentence: AnnotatedSentence): boolean {
         let random = new Random(1);
         let done = false;

@@ -13,6 +13,12 @@ export class MostFrequentSentenceAutoSemantic extends SentenceAutoSemantic{
     private readonly turkishWordNet: WordNet;
     private readonly fsm: FsmMorphologicalAnalyzer;
 
+    /**
+     * Constructor for the {@link MostFrequentSentenceAutoSemantic} class. Gets the Turkish wordnet and Turkish fst based
+     * morphological analyzer from the user and sets the corresponding attributes.
+     * @param turkishWordNet Turkish wordnet
+     * @param fsm Turkish morphological analyzer
+     */
     constructor(turkishWordNet: WordNet, fsm: FsmMorphologicalAnalyzer) {
         super();
         this.turkishWordNet = turkishWordNet

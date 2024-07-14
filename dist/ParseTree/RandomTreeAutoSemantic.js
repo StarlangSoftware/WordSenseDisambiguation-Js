@@ -16,11 +16,24 @@
     const ViewLayerType_1 = require("nlptoolkit-annotatedsentence/dist/ViewLayerType");
     const Random_1 = require("nlptoolkit-util/dist/Random");
     class RandomTreeAutoSemantic extends TreeAutoSemantic_1.TreeAutoSemantic {
+        /**
+         * Constructor for the {@link RandomSentenceAutoSemantic} class. Gets the Turkish wordnet and Turkish fst based
+         * morphological analyzer from the user and sets the corresponding attributes.
+         * @param turkishWordNet Turkish wordnet
+         * @param fsm Turkish morphological analyzer
+         */
         constructor(turkishWordNet, fsm) {
             super();
             this.turkishWordNet = turkishWordNet;
             this.fsm = fsm;
         }
+        /**
+         * The method annotates the word senses of the words in the parse tree randomly. The algorithm processes target
+         * words one by one. First, the algorithm constructs an array of all possible senses for the target word to
+         * annotate. Then it chooses a sense randomly.
+         * @param parseTree Parse tree to be annotated.
+         * @return True.
+         */
         autoLabelSingleSemantics(parseTree) {
             let nodeDrawableCollector = new NodeDrawableCollector_1.NodeDrawableCollector(parseTree.getRoot(), new IsTurkishLeafNode_1.IsTurkishLeafNode());
             let leafList = nodeDrawableCollector.collect();

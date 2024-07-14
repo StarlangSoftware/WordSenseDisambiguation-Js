@@ -15,11 +15,23 @@
     const IsTurkishLeafNode_1 = require("nlptoolkit-annotatedtree/dist/Processor/Condition/IsTurkishLeafNode");
     const ViewLayerType_1 = require("nlptoolkit-annotatedsentence/dist/ViewLayerType");
     class TurkishTreeAutoSemantic extends TreeAutoSemantic_1.TreeAutoSemantic {
+        /**
+         * Constructor for the {@link TurkishTreeAutoSemantic} class. Gets the Turkish wordnet and Turkish fst based
+         * morphological analyzer from the user and sets the corresponding attributes.
+         * @param turkishWordNet Turkish wordnet
+         * @param fsm Turkish morphological analyzer
+         */
         constructor(turkishWordNet, fsm) {
             super();
             this.turkishWordNet = turkishWordNet;
             this.fsm = fsm;
         }
+        /**
+         * The method checks the number of possible senses of each word in the parse tree. If all words have only one
+         * possible sense, it annotates the words with the corresponding sense. Otherwise, it does not annotate any words.
+         * @param parseTree The parse tree for which word sense annotation will be done automatically.
+         * @return True, if at least one word is semantically annotated, false otherwise.
+         */
         autoLabelSingleSemantics(parseTree) {
             let modified = false;
             let nodeDrawableCollector = new NodeDrawableCollector_1.NodeDrawableCollector(parseTree.getRoot(), new IsTurkishLeafNode_1.IsTurkishLeafNode());

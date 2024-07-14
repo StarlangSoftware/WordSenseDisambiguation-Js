@@ -5,6 +5,12 @@ import { FsmMorphologicalAnalyzer } from "nlptoolkit-morphologicalanalysis/dist/
 export declare class MostFrequentSentenceAutoSemantic extends SentenceAutoSemantic {
     private readonly turkishWordNet;
     private readonly fsm;
+    /**
+     * Constructor for the {@link MostFrequentSentenceAutoSemantic} class. Gets the Turkish wordnet and Turkish fst based
+     * morphological analyzer from the user and sets the corresponding attributes.
+     * @param turkishWordNet Turkish wordnet
+     * @param fsm Turkish morphological analyzer
+     */
     constructor(turkishWordNet: WordNet, fsm: FsmMorphologicalAnalyzer);
     /**
      Determines the synset containing the literal with the lowest sense number.
