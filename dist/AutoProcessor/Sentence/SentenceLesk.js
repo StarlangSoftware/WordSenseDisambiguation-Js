@@ -1,30 +1,22 @@
-import {SentenceAutoSemantic} from "./SentenceAutoSemantic";
-import {AnnotatedSentence} from "nlptoolkit-annotatedsentence/dist/AnnotatedSentence";
-import {WordNet} from "nlptoolkit-wordnet/dist/WordNet";
-import {
-    FsmMorphologicalAnalyzer
-} from "nlptoolkit-morphologicalanalysis/dist/MorphologicalAnalysis/FsmMorphologicalAnalyzer";
-import {SynSet} from "nlptoolkit-wordnet/dist/SynSet";
-import {Random} from "nlptoolkit-util/dist/Random";
-import {AnnotatedWord} from "nlptoolkit-annotatedsentence/dist/AnnotatedWord";
-
-export class Lesk extends SentenceAutoSemantic{
-
-    private turkishWordNet: WordNet;
-    private fsm: FsmMorphologicalAnalyzer;
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SentenceLesk = void 0;
+const SentenceAutoSemantic_1 = require("./SentenceAutoSemantic");
+const Random_1 = require("nlptoolkit-util/dist/Random");
+class SentenceLesk extends SentenceAutoSemantic_1.SentenceAutoSemantic {
+    turkishWordNet;
+    fsm;
     /**
-     * Constructor for the {@link Lesk} class. Gets the Turkish wordnet and Turkish fst based
+     * Constructor for the {@link SentenceLesk} class. Gets the Turkish wordnet and Turkish fst based
      * morphological analyzer from the user and sets the corresponding attributes.
      * @param turkishWordNet Turkish wordnet
      * @param fsm Turkish morphological analyzer
      */
-    constructor(turkishWordNet: WordNet, fsm: FsmMorphologicalAnalyzer) {
+    constructor(turkishWordNet, fsm) {
         super();
-        this.turkishWordNet = turkishWordNet
-        this.fsm = fsm
+        this.turkishWordNet = turkishWordNet;
+        this.fsm = fsm;
     }
-
     /**
      * Calculates the number of words that occur (i) in the definition or example of the given synset and (ii) in the
      * given sentence.
@@ -33,28 +25,28 @@ export class Lesk extends SentenceAutoSemantic{
      * @return The number of words that occur (i) in the definition or example of the given synset and (ii) in the given
      * sentence.
      */
-    private intersection(synSet: SynSet, sentence: AnnotatedSentence): number{
-        let words1
-        if (synSet.getExample() != null){
+    intersection(synSet, sentence) {
+        let words1;
+        if (synSet.getExample() != null) {
             words1 = (synSet.getLongDefinition() + " " + synSet.getExample()).split(" ");
-        } else {
+        }
+        else {
             words1 = synSet.getLongDefinition().split(" ");
         }
         let words2 = sentence.toWords().split(" ");
         let count = 0;
-        for (let word1 of words1){
-            for (let word2 of words2){
-                if (word1.toLocaleLowerCase("tr") == word2.toLocaleLowerCase("tr")){
+        for (let word1 of words1) {
+            for (let word2 of words2) {
+                if (word1.toLocaleLowerCase("tr") == word2.toLocaleLowerCase("tr")) {
                     count++;
                 }
             }
         }
         return count;
     }
-
     /**
-     * The method annotates the word senses of the words in the sentence according to the simplified Lesk algorithm.
-     * Lesk is an algorithm that chooses the sense whose definition or example shares the most words with the target
+     * The method annotates the word senses of the words in the sentence according to the simplified ParseTreeLesk algorithm.
+     * ParseTreeLesk is an algorithm that chooses the sense whose definition or example shares the most words with the target
      * word’s neighborhood. The algorithm processes target words one by one. First, the algorithm constructs an array of
      * all possible senses for the target word to annotate. Then for each possible sense, the number of words shared
      * between the definition of sense synset and target sentence is calculated. Then the sense with the maximum
@@ -62,32 +54,33 @@ export class Lesk extends SentenceAutoSemantic{
      * @param sentence Sentence to be annotated.
      * @return True, if at least one word is semantically annotated, false otherwise.
      */
-    protected autoLabelSingleSemantics(sentence: AnnotatedSentence): boolean {
-        let random = new Random(1);
+    autoLabelSingleSemantics(sentence) {
+        let random = new Random_1.Random(1);
         let done = false;
         for (let i = 0; i < sentence.wordCount(); i++) {
             let synSets = this.getCandidateSynSets(this.turkishWordNet, this.fsm, sentence, i);
             let maxIntersection = -1;
-            for (let j = 0; j < synSets.length; j++){
+            for (let j = 0; j < synSets.length; j++) {
                 let synSet = synSets[j];
                 let intersectionCount = this.intersection(synSet, sentence);
-                if (intersectionCount > maxIntersection){
+                if (intersectionCount > maxIntersection) {
                     maxIntersection = intersectionCount;
                 }
             }
-            let maxSynSets = new Array<SynSet>();
-            for (let j = 0; j < synSets.length; j++){
+            let maxSynSets = new Array();
+            for (let j = 0; j < synSets.length; j++) {
                 let synSet = synSets[j];
-                if (this.intersection(synSet, sentence) == maxIntersection){
+                if (this.intersection(synSet, sentence) == maxIntersection) {
                     maxSynSets.push(synSet);
                 }
             }
-            if (maxSynSets.length > 0){
+            if (maxSynSets.length > 0) {
                 done = true;
-                (<AnnotatedWord> sentence.getWord(i)).setSemantic(maxSynSets[random.nextInt(maxSynSets.length)].getId());
+                sentence.getWord(i).setSemantic(maxSynSets[random.nextInt(maxSynSets.length)].getId());
             }
         }
         return done;
     }
-
 }
+exports.SentenceLesk = SentenceLesk;
+//# sourceMappingURL=SentenceLesk.js.map

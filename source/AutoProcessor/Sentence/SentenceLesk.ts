@@ -1,23 +1,20 @@
-import {TreeAutoSemantic} from "./TreeAutoSemantic";
-import {ParseTreeDrawable} from "nlptoolkit-annotatedtree/dist/ParseTreeDrawable";
+import {SentenceAutoSemantic} from "./SentenceAutoSemantic";
+import {AnnotatedSentence} from "nlptoolkit-annotatedsentence/dist/AnnotatedSentence";
 import {WordNet} from "nlptoolkit-wordnet/dist/WordNet";
 import {
     FsmMorphologicalAnalyzer
 } from "nlptoolkit-morphologicalanalysis/dist/MorphologicalAnalysis/FsmMorphologicalAnalyzer";
 import {SynSet} from "nlptoolkit-wordnet/dist/SynSet";
-import {ParseNodeDrawable} from "nlptoolkit-annotatedtree/dist/ParseNodeDrawable";
-import {ViewLayerType} from "nlptoolkit-annotatedsentence/dist/ViewLayerType";
 import {Random} from "nlptoolkit-util/dist/Random";
-import {NodeDrawableCollector} from "nlptoolkit-annotatedtree/dist/Processor/NodeDrawableCollector";
-import {IsTurkishLeafNode} from "nlptoolkit-annotatedtree/dist/Processor/Condition/IsTurkishLeafNode";
+import {AnnotatedWord} from "nlptoolkit-annotatedsentence/dist/AnnotatedWord";
 
-export class Lesk extends TreeAutoSemantic{
+export class SentenceLesk extends SentenceAutoSemantic{
 
     private turkishWordNet: WordNet;
     private fsm: FsmMorphologicalAnalyzer;
 
     /**
-     * Constructor for the Lesk class. Gets the Turkish wordnet and Turkish fst based
+     * Constructor for the {@link SentenceLesk} class. Gets the Turkish wordnet and Turkish fst based
      * morphological analyzer from the user and sets the corresponding attributes.
      * @param turkishWordNet Turkish wordnet
      * @param fsm Turkish morphological analyzer
@@ -30,23 +27,20 @@ export class Lesk extends TreeAutoSemantic{
 
     /**
      * Calculates the number of words that occur (i) in the definition or example of the given synset and (ii) in the
-     * given parse tree.
+     * given sentence.
      * @param synSet Synset of which the definition or example will be checked
-     * @param leafList Leaf nodes of the parse tree.
+     * @param sentence Sentence to be annotated.
      * @return The number of words that occur (i) in the definition or example of the given synset and (ii) in the given
-     * parse tree.
+     * sentence.
      */
-    private intersection(synSet: SynSet, leafList: Array<ParseNodeDrawable>): number{
+    private intersection(synSet: SynSet, sentence: AnnotatedSentence): number{
         let words1
         if (synSet.getExample() != null){
             words1 = (synSet.getLongDefinition() + " " + synSet.getExample()).split(" ");
         } else {
             words1 = synSet.getLongDefinition().split(" ");
         }
-        let words2 = new Array<string>();
-        for (let i = 0; i < leafList.length; i++){
-            words2.push(leafList[i].getLayerData(ViewLayerType.TURKISH_WORD));
-        }
+        let words2 = sentence.toWords().split(" ");
         let count = 0;
         for (let word1 of words1){
             for (let word2 of words2){
@@ -59,26 +53,24 @@ export class Lesk extends TreeAutoSemantic{
     }
 
     /**
-     * The method annotates the word senses of the words in the parse tree according to the simplified Lesk algorithm.
-     * Lesk is an algorithm that chooses the sense whose definition or example shares the most words with the target
+     * The method annotates the word senses of the words in the sentence according to the simplified ParseTreeLesk algorithm.
+     * ParseTreeLesk is an algorithm that chooses the sense whose definition or example shares the most words with the target
      * word’s neighborhood. The algorithm processes target words one by one. First, the algorithm constructs an array of
      * all possible senses for the target word to annotate. Then for each possible sense, the number of words shared
-     * between the definition of sense synset and target tree is calculated. Then the sense with the maximum
+     * between the definition of sense synset and target sentence is calculated. Then the sense with the maximum
      * intersection count is selected.
-     * @param parseTree Parse tree to be annotated.
+     * @param sentence Sentence to be annotated.
      * @return True, if at least one word is semantically annotated, false otherwise.
      */
-    protected autoLabelSingleSemantics(parseTree: ParseTreeDrawable): boolean {
+    protected autoLabelSingleSemantics(sentence: AnnotatedSentence): boolean {
         let random = new Random(1);
-        let nodeDrawableCollector = new NodeDrawableCollector(<ParseNodeDrawable> parseTree.getRoot(), new IsTurkishLeafNode());
-        let leafList = nodeDrawableCollector.collect();
         let done = false;
-        for (let i = 0; i < leafList.length; i++){
-            let synSets = this.getCandidateSynSets(this.turkishWordNet, this.fsm, leafList, i);
+        for (let i = 0; i < sentence.wordCount(); i++) {
+            let synSets = this.getCandidateSynSets(this.turkishWordNet, this.fsm, sentence, i);
             let maxIntersection = -1;
             for (let j = 0; j < synSets.length; j++){
                 let synSet = synSets[j];
-                let intersectionCount = this.intersection(synSet,leafList);
+                let intersectionCount = this.intersection(synSet, sentence);
                 if (intersectionCount > maxIntersection){
                     maxIntersection = intersectionCount;
                 }
@@ -86,13 +78,13 @@ export class Lesk extends TreeAutoSemantic{
             let maxSynSets = new Array<SynSet>();
             for (let j = 0; j < synSets.length; j++){
                 let synSet = synSets[j];
-                if (this.intersection(synSet,leafList) == maxIntersection){
+                if (this.intersection(synSet, sentence) == maxIntersection){
                     maxSynSets.push(synSet);
                 }
             }
             if (maxSynSets.length > 0){
-                leafList[i].getLayerInfo().setLayerData(ViewLayerType.SEMANTICS, maxSynSets[random.nextInt(maxSynSets.length)].getId());
                 done = true;
+                (<AnnotatedWord> sentence.getWord(i)).setSemantic(maxSynSets[random.nextInt(maxSynSets.length)].getId());
             }
         }
         return done;

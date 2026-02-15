@@ -1,9 +1,9 @@
 {
   "name": "nlptoolkit-wordsensedisambiguation",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
-  "main": "index.js",
-  "types": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "Mocha"
   },
@@ -19,23 +19,24 @@
   "homepage": "https://github.com/StarlangSoftware/WordSenseDisambiguation-Js#readme",
   "devDependencies": {
     "@types/mocha": "^9.1.0",
-    "mocha": "^9.2.0",
+    "@types/node": "^25.2.3",
+    "mocha": "^9.1.3",
     "ts-node": "^10.4.0",
-    "typescript": "^4.5.5"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "nlptoolkit-annotatedsentence": "^1.0.4",
-    "nlptoolkit-annotatedtree": "^1.0.3",
-    "nlptoolkit-corpus": "^1.0.9",
-    "nlptoolkit-dependencyparser": "^1.0.3",
-    "nlptoolkit-dictionary": "^1.0.9",
-    "nlptoolkit-framenet": "^1.0.1",
-    "nlptoolkit-morphologicalanalysis": "^1.0.9",
-    "nlptoolkit-namedentityrecognition": "^1.0.1",
-    "nlptoolkit-parsetree": "^1.0.2",
-    "nlptoolkit-propbank": "^1.0.3",
-    "nlptoolkit-sentinet": "^1.0.1",
-    "nlptoolkit-util": "^1.0.5",
-    "nlptoolkit-wordnet": "^1.0.5"
+    "nlptoolkit-annotatedsentence": "^1.0.9",
+    "nlptoolkit-annotatedtree": "^1.0.6",
+    "nlptoolkit-corpus": "^1.0.12",
+    "nlptoolkit-dependencyparser": "^1.0.10",
+    "nlptoolkit-dictionary": "^1.0.14",
+    "nlptoolkit-framenet": "^1.0.8",
+    "nlptoolkit-morphologicalanalysis": "^1.0.19",
+    "nlptoolkit-namedentityrecognition": "^1.0.3",
+    "nlptoolkit-parsetree": "^1.0.6",
+    "nlptoolkit-propbank": "^1.0.7",
+    "nlptoolkit-sentinet": "^1.0.3",
+    "nlptoolkit-util": "^1.0.12",
+    "nlptoolkit-wordnet": "^1.0.7"
   }
 }
